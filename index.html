@@ -80,6 +80,8 @@
         </ol>
       </p>
     </section>
+    <section id="conformance">
+    </section>
     <section>
       <h2>Security and Privacy Considerations</h2>
       <p>
@@ -99,7 +101,7 @@
         [[!HTML5]].
       </p>
       <p>
-        The <dfn id="Promise"><code><a href="http://dom.spec.whatwg.org/#promise">Promise</a></code></dfn>
+        The <dfn id="promise"><a href="http://dom.spec.whatwg.org/#promise">Promise</a></dfn>
         interface provides asynchronous access to the result of an operation
         that is ongoing, has yet to start, or has completed, as defined in
         <a href="#refsDOM">[DOM]</a>.
@@ -140,11 +142,70 @@
           </p>
           <dl title="interface DisplayManager : EventTarget" class='idl'>
             <dt><a>Promise</a> getAll()</dt>
+            <dd>
+              <p>
+                When invoked, the <a>getAll()</a> method MUST run the following
+                steps:
+                <ol>
+                  <li>
+                    Make a request to the system to query all display information
+                    that are connected to the system;
+                  </li>
+                  <li>
+                    Let <em><a href="#promise">promise</a></em> be a new <code>
+                    <a href="#promise">Promise</a></code> object and
+                    <em>resolver</em> its associated resolver;
+                  </li>
+                  <li>
+                    Return <em><a href="#promise">promise</a></em> and run the
+                    remaining steps asynchronously;
+                  </li>
+                  <li>
+                    If an error occurs, run these substeps and then terminate:
+                    <ol>
+                      <li>
+                        Let <em>error</em> be a new <code>DOMError</code> object
+                        whose name is <code>"UnknownError"</code>,
+                      </li>
+                      <li>
+                        Run <em>resolver</em>'s internal <em>reject</em>
+                        algorithm with <em>error</em> as <code>value</code>.
+                      </li>
+                    </ol>
+                  </li>
+                  <li>
+                    If the operation successfully completes, run these substeps:
+                    <ol>
+                      <li>
+                        Let <em>displays</em> be a new array of <a>DisplayInfo</a>
+                        objects represented all display information retrieved.
+                      </li>
+                      <li>
+                        Run <em>resolver</em>'s intenal <code>fulfill</code>
+                        algorithm with <em>displays</em> as <code>value</code>.
+                      </li>
+                    </ol>
+                  </li>
+                </ol>
+              </p>
+            </dd>
             <dt>attribute <a>EventHandler</a> onconnected</dt>
-            <dd>For connected event</dd>
+            <dd>Fired when a new display is connected to the system.</dd>
             <dt>attribute <a>EventHandler</a> ondisconnected</dt>
-            <dd>For disconnected event</dd>
+            <dd>Fired when a display is removed from the system.</dd>
           </dl>
+          </section>
+          <section>
+            <h2><a>DisplayManager</a> Events</h2>
+            <p>
+              The <a>DisplayManager</a> events are fired when a display is connected
+              to or disconnected from the system.
+              <dl title="interface DisplayManagerEvent : Event" class="idl">
+                <dt>attribute readonly <a>DisplayInfo info</dt>
+                <dd>The information data of the display already connected or disconnected.
+              <dl>
+            </p>
+          </section>
         </section>
       </section>
     </section>
