@@ -2,7 +2,7 @@
 <html xmlns='http://www.w3.org/1999/xhtml'>
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-    <title>Display Information API </title>
+    <title>The Display Information API </title>
     <script src='https://www.w3.org/Tools/respec/respec-w3c-common'
      async class='remove'></script>
     <script class='remove'>
@@ -61,22 +61,9 @@
       <h2>Introduction</h2>
       <p>
         The purpose of Display Information API is to enable multiple display
-        support for web applications. The followings are 2 typical usage scenarios:
-        <ol>
-          <li>
-            <b>Playing Game:</b>
-            Suppose you are playing a Moto racing game on a mobile device, with the
-            secondary display connected through HDMI/Miracast/Airplay, the device
-            can act as a game controller to control the game displayed on the
-            secondary display.
-          </li>
-          <li>
-            <b>Show Presentation:</b>
-            In case of a meeting room or a demo room where a secondary display is
-            for use, you can share any content in your device to the other via
-            the secondary display, and manipulate the slides showed on the
-            secondary display from your handheld device.
-          </li>
+        support for web applications. In combination with the windowing API,
+        it allows Web applications to create the content window on the secondary
+        window and present a different content from main window.
         </ol>
       </p>
     </section>
@@ -190,24 +177,60 @@
               </p>
             </dd>
             <dt>attribute <a>EventHandler</a> onconnected</dt>
-            <dd>Fired when a new display is connected to the system.</dd>
+            <dd>Fired when a new display is connected to the system. The information
+             of the display connected is carried by <a>DisplayManagerEvent</a>.
+            </dd>
             <dt>attribute <a>EventHandler</a> ondisconnected</dt>
-            <dd>Fired when a display is removed from the system.</dd>
+            <dd>Fired when a display is removed from the system. The information
+              of the display disconnected is carried by <a>DisplayManagerEvent</a>.</dd>
           </dl>
-          </section>
+        </section>
+        <section>
+          <h2><a>DisplayManager</a> Events</h2>
           <section>
-            <h2><a>DisplayManager</a> Events</h2>
             <p>
               The <a>DisplayManager</a> events are fired when a display is connected
-              to or disconnected from the system.
-              <dl title="interface DisplayManagerEvent : Event" class="idl">
-                <dt>attribute readonly <a>DisplayInfo info</dt>
-                <dd>The information data of the display already connected or disconnected.
-              <dl>
+              to or disconnected from the system. The user agent SHOULD allow Web applications
+              to register their event handler through <a>onconnected</a> and
+              <a>ondisconnected</a>.
             </p>
+            <dl title="interface DisplayManagerEvent : Event" class="idl">
+              <dt>attribute readonly <a>DisplayInfo</a> info</dt>
+              <dd>The information data of the display already connected or disconnected.</dd>
+            <dl>
           </section>
         </section>
       </section>
+    </section>
+    <section>
+      <h2><a>DisplayInfo</a> interface</h2>
+      <p><a>DisplayInfo</a> interface represents the meta data about a physical
+        display device, including the physical dimensions and screen resolution.
+      </p>
+      <dl title="interface DisplayInfo" class="idl">
+        <dt>attribute readonly DOMString id</dt>
+        <dd>The unique identifier of the display.</dd>
+        <dt>attribute readonly DOMString name</dt>
+        <dd>The user-friendly name (e.g. "HP LCD monitor").</dd>
+        <dt>attribute readonly boolean isPrimary</dt>
+        <dd>True if this is the primary display.</dd>
+        <dt>attribute readonly boolean isInternal</dt>
+        <dd>True if this is an internal and builtin display. </dd>
+        <dt>attribute readonly unsigned int dpiX</dt>
+        <dd>The number of pixels per inch along the x-axis</dd>
+        <dt>attribute readonly unsigned int dpiY</dt>
+        <dd>The number of pixels per inch along the y-axis</dd>
+        <dt>attribute readonly unsigned long resolutionWidth</dt>
+        <dd>The total number of addressable pixels in the horizontal direction
+         of a rectangular entity when held in its default orientation.</dd>
+        <dt>attribute readonly unsigned long resolutionHeight</dt>
+        <dd>The total number of addressable pixels in the vertical direction
+         of a rectangular entity when held in its default orientation.</dd>
+        <dt>attribute readonly unsigned long availWidth</dt>
+        <dd>The available width excluding the window decoration, in pixels</dd>
+        <dt>attribute readonly unsigned long availHeight</dt>
+        <dd>The available height excluding the window decoration, in pixels</dd>
+      </dl>
     </section>
   </body>
 </html>
