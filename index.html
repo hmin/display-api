@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <title>Display Information API </title>
+    <script src='https://www.w3.org/Tools/respec/respec-w3c-common'
+     async class='remove'></script>
+    <script class='remove'>
+      var respecConfig = {
+              specStatus:          "ED"
+          ,   shortName:           "display-api"
+          ,   publishDate:         ""
+          ,   previousPublishDate: ""
+          ,   previousMaturity:    ""
+          ,   editors:  [
+                  {
+                    name: "Hongbo Min",
+                    company: "Intel",
+                    companyURL: "http://www.intel.com/software"
+                  },
+                  { name: "..." }
+              ]
+          ,   edDraftURI:    "http://www.w3.org/2012/sysapps/display-api"
+          ,   crEnd:         ""
+          ,   inlineCSS:     true
+          ,   wg:            "System Application Working Group"
+          ,   wgURI:         "http://www.w3.org/2012/sysapps"
+          ,   wgPublicList:  "public-sysapps"
+          ,   wgPatentURI:   "http://www.w3.org/2004/01/pp-impl/43696/status"
+          ,   otherLinks: [
+                {
+                  key: "Repository",
+                  data: [
+                     {
+                       value: "https://github.com/hmin/display-api",
+                       href: "https://github.com/hmin/display-api"
+                     },
+                  ]
+                }
+             ],
+        };
+    </script>
+  </head>
+  <body>
+    <section id='abstract'>
+    This specification defines a System Level API to allow Web applications to
+    retrieve the status of the display connected to the system and setup an
+    asynchronous notification of display connection and disconnection event.
+    </section>
+    <section id='sotd'>
+     <p>
+      This document is intended to define the Display Information API to meet
+      the requirements of multiple displays supported in Web applications.
+     </p>
+     <p>
+      The typical usage is for wireless display usage scenario by mobile device,
+      like Intel WiDi, Miracast on Android and AirPlay for iOS, by use of this
+      API, Web applications have an ability to take advantage of the secondary
+      display to present their contents on a bigger screen.
+     </p>
+    </section>
+    <section class="informative">
+      <h2>Introduction</h2>
+      <p>
+      The purpose of Display Information API is to enable multiple display
+      support for web applications. The followings are 2 typical usage scenarios:
+      <section>
+        <h2>Playing Game</h2>
+        <p>
+        Suppose you are playing a Moto racing game on a mobile device, with the
+        secondary display connected through HDMI/Miracast/Airplay, the device
+        can act as a game controller to control the game displayed on the
+        secondary display.
+        </p>
+      </section>
+      <section>
+        <h2>Show Presentation</h2>
+        <p>
+          In case of a meeting room or a demo room where a secondary display is
+          for use, you can share any content in your device to the other via
+          the secondary display, and manipulate the slides showed on the
+          secondary display from your handheld device.
+        </p>
+      </section>
+      </p>
+    </section>
+    <section id="conformance">
+    </section>
+    <section>
+      <h2>Security and Privacy Considerations</h2>
+      <p>
+      A Web application using this API is able to stream the contents to an
+      external display from device which some end-user may object to such a
+      behavior. Any conforming implementation should have a permission control
+      to let user grant the API permission explicitly.
+      </p>
+    </section>
+    <section>
+      <h2>
+        Terminology
+      </h2>
+      <p>
+        The <dfn><a href="http://dev.w3.org/html5/spec/webappapis.html#event-handlers">EventHandler</a></dfn>
+        interface represents a callback used for event handlers as defined in
+        [[!HTML5]].
+      </p>
+      <p>
+        The <dfn id="promise"><code><a href="http://dom.spec.whatwg.org/#promise">Promise</a></code></dfn>
+        interface provides asynchronous access to the result of an operation
+        that is ongoing, has yet to start, or has completed, as defined in
+        <a href="#refsDOM">[DOM]</a>.
+      </p>
+      <p>
+        The concept of <dfn><a href=
+        'http://dev.w3.org/html5/spec/webappapis.html#fire-a-simple-event'>fire
+        a simple event</a></dfn> is defined in [[!HTML5]].
+      </p>
+      <p>
+        The terms <dfn><a href=
+        "http://dev.w3.org/html5/spec/webappapis.html#event-handlers">event
+        handlers</a></dfn> and <dfn><a href=
+        "http://dev.w3.org/html5/spec/webappapis.html#event-handler-event-type">
+        event handler event types</a></dfn> are defined in [[!HTML5]].
+      </p>
+      <p>
+        The <dfn><a href=
+        'http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html/#interface-domerror'>
+        DOMError</a></dfn> interface represents an error handling object as
+        defined in [[!DOM4]].
+      </p>
+    </section>
+    <section>
+      <h2>
+        <a>DisplayManager</a> interface
+      </h2>
+      <section>
+        <p>
+          The <a>DisplayManager</a> interface is exposed on the <a>Navigator</a>
+          object. All instances of the <a>Navigator</a> type are defined to also
+          implement the <a>DisplayManager</a> interface.
+        </p>
+        <dl title="partial interface Navigator" class="idl">
+          <dt>readonly attribute DisplayManager display</dt>
+        </dl>
+        <section>
+          <p>
+            <a>DisplayManager</a> interface allows to retrieve the information of
+            the displays connected to the system and register asynchronous event
+            handler for display connection.
+          </p>
+          <dl title="interface DisplayManager : EventTarget" class='idl'>
+            <dt><a>Promise</a> getAll()</dt>
+            <dt><a>EventHandler</a> onconnected</dt>
+            <dt><a>EventHandler</a> ondisconnected</dt>
+          </dl>
+        </section>
+      </section>
+    </section>
+  </body>
+</html>
