@@ -128,7 +128,14 @@
             handler for display connection.
           </p>
           <dl title="interface DisplayManager : EventTarget" class='idl'>
-            <dt><a>Promise</a> getAll()</dt>
+            <dt>void getAll(SuccessCB successCallback, optional ErrorCB errorCallback)</dt>
+            <dd>Make a request to the system to query all display information
+                asynchronously. On completing successfully, the <a>successCallback</a>
+                gets invoked with passing an array of <a>DisplayInfo</a> objects.
+                Otherwise, the <a>errorCallabck</a> gets invoked if it is not
+                null, with passing a <a>DOMError</a> object.
+            </dd>
+            <!--<dt><a>Promise</a> getAll()</dt>
             <dd>
               <p>
                 When invoked, the <a>getAll()</a> method MUST run the following
@@ -175,7 +182,7 @@
                   </li>
                 </ol>
               </p>
-            </dd>
+            </dd>-->
             <dt>attribute <a>EventHandler</a> onconnected</dt>
             <dd>Fired when a new display is connected to the system. The information
              of the display connected is carried by <a>DisplayManagerEvent</a>.
@@ -204,8 +211,8 @@
     </section>
     <section>
       <h2><a>DisplayInfo</a> interface</h2>
-      <p><a>DisplayInfo</a> interface represents the meta data about a physical
-        display device, including the physical dimensions and screen resolution.
+      <p><a>DisplayInfo</a> interface represents the meta information of a logical
+        display, such as DPI and screen resolution and so on.
       </p>
       <dl title="interface DisplayInfo" class="idl">
         <dt>attribute readonly DOMString id</dt>
@@ -215,21 +222,19 @@
         <dt>attribute readonly boolean isPrimary</dt>
         <dd>True if this is the primary display.</dd>
         <dt>attribute readonly boolean isInternal</dt>
-        <dd>True if this is an internal and builtin display. </dd>
+        <dd>True if this is an internal display. </dd>
         <dt>attribute readonly unsigned int dpiX</dt>
         <dd>The number of pixels per inch along the x-axis</dd>
         <dt>attribute readonly unsigned int dpiY</dt>
         <dd>The number of pixels per inch along the y-axis</dd>
-        <dt>attribute readonly unsigned long resolutionWidth</dt>
-        <dd>The total number of addressable pixels in the horizontal direction
-         of a rectangular entity when held in its default orientation.</dd>
-        <dt>attribute readonly unsigned long resolutionHeight</dt>
-        <dd>The total number of addressable pixels in the vertical direction
-         of a rectangular entity when held in its default orientation.</dd>
+        <dt>attribute readonly unsigned long width</dt>
+        <dd>The total number of addressable pixels along the x-axis.</dd>
+        <dt>attribute readonly unsigned long height</dt>
+        <dd>The total number of addressable pixels along the y-axis.</dd>
         <dt>attribute readonly unsigned long availWidth</dt>
-        <dd>The available width excluding the window decoration, in pixels</dd>
+        <dd>The adjusted width to exclude the window decor if have, in pixels</dd>
         <dt>attribute readonly unsigned long availHeight</dt>
-        <dd>The available height excluding the window decoration, in pixels</dd>
+        <dd>The adjusted height to exclude th window decor if have, in pixels</dd>
       </dl>
     </section>
   </body>
