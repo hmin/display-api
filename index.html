@@ -52,7 +52,7 @@
       This document is intended to define the Display Information API to meet
       the requirements of multiple displays supported in Web applications.
       The typical usage is for wireless display usage scenario by mobile device,
-      like Intel WiDi, Miracast on Android and AirPlay for iOS, by use of this
+      like Intel WiDi, Miracast compliant device and AirPlay for iOS, by use of this
       API, Web applications have an ability to take advantage of the secondary
       display to present their contents on a bigger screen.
      </p>
@@ -66,6 +66,30 @@
         window and present a different content from main window.
         </ol>
       </p>
+      <pre class="example sh_html">
+function onSuccess(displays) {
+  for(var i = 0; i < displays.length; ++i) {
+    // enumerate the display info one by one.
+  }
+}
+function onDisplayConnected(display) {
+  console.log("A new display is ready for use");
+  // create the second content window on the new display if you want.
+}
+
+function onDisplayDisconnected(display) {
+  console.log("A display is disconnected from the system");
+  // Save the data for the content window.
+}
+
+function onError(error) {
+  console.log("failed to retrieve display information");
+}
+
+navigator.display.getAll(onSuccess, onError);
+navigator.display.addEventListener("connect", onDisplayConnected);
+navigator.display.addEventListener("disconnect", onDisplayDisconnected);
+      </pre>
     </section>
     <section id="conformance">
     </section>
@@ -183,11 +207,11 @@
                 </ol>
               </p>
             </dd>-->
-            <dt>attribute <a>EventHandler</a> onconnected</dt>
+            <dt>attribute <a>EventHandler</a> onconnect</dt>
             <dd>Fired when a new display is connected to the system. The information
              of the display connected is carried by <a>DisplayManagerEvent</a>.
             </dd>
-            <dt>attribute <a>EventHandler</a> ondisconnected</dt>
+            <dt>attribute <a>EventHandler</a> ondisconnect</dt>
             <dd>Fired when a display is removed from the system. The information
               of the display disconnected is carried by <a>DisplayManagerEvent</a>.</dd>
           </dl>
@@ -198,8 +222,8 @@
             <p>
               The <a>DisplayManager</a> events are fired when a display is connected
               to or disconnected from the system. The user agent SHOULD allow Web applications
-              to register their event handler through <a>onconnected</a> and
-              <a>ondisconnected</a>.
+              to register their event handler through <a>onconnect</a> and
+              <a>ondisconnect</a>.
             </p>
             <dl title="interface DisplayManagerEvent : Event" class="idl">
               <dt>attribute readonly <a>DisplayInfo</a> info</dt>

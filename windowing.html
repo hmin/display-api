@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <title>The Windowing API </title>
+    <script src='https://www.w3.org/Tools/respec/respec-w3c-common'
+     async class='remove'></script>
+    <script class='remove'>
+      var respecConfig = {
+              specStatus:          "ED"
+          ,   shortName:           "windowing-api"
+          ,   publishDate:         ""
+          ,   previousPublishDate: ""
+          ,   previousMaturity:    ""
+          ,   editors:  [
+                  {
+                    name: "Hongbo Min",
+                    company: "Intel",
+                    companyURL: "http://www.intel.com/software"
+                  },
+                  { name: "..." }
+              ]
+          ,   edDraftURI:    "http://www.w3.org/2012/sysapps/windowing-api"
+          ,   crEnd:         ""
+          ,   inlineCSS:     true
+          ,   wg:            "System Application Working Group"
+          ,   wgURI:         "http://www.w3.org/2012/sysapps"
+          ,   wgPublicList:  "public-sysapps"
+          ,   wgPatentURI:   "http://www.w3.org/2004/01/pp-impl/43696/status"
+          ,   otherLinks: [
+                {
+                  key: "Repository",
+                  data: [
+                     {
+                       value: "https://github.com/hmin/display-api",
+                       href: "https://github.com/hmin/display-api"
+                     },
+                  ]
+                }
+             ],
+        };
+    </script>
+  </head>
+  <body>
+    <section id='abstract'>
+      This specification serves as an extension of SysApps Runtime Model spec
+      for multiple window support.
+    </section>
+    <section id='sotd'>
+     <p>
+       The windowing API spec is intended to allow web application to create
+       more than one app window to present different content. One of typical
+       usage scenario is, an app can create a window on a remote display
+       connected for showing presentation in combination with the
+       <a href=""> Display Information API </a>.
+
+       With windowing API, the <a>Application</a> defined in Runtime Model spec
+       is able to create multiple windows. The onterminate event will be fired
+       after a while when all windows created are closed.
+     </p>
+    </section>
+    <section>
+      <h2>Introduction</h2>
+      <section class="example">
+      <p>
+        Example of using the windowing API and display info API to create
+        different content window, e.g. for game view and controller.
+
+      <pre class="example sh_html">
+        function onSuccess(win) {
+          // right now a new AppWindow is available to be used.
+        }
+
+        function onError(error) {
+          console.log("failed to create the window on a specified display")
+        }
+
+        function onDisplayConnected(displays) {
+          for (var i = 0; i < displays.length; ++i)
+          if (!displays[i].isInternal) {
+            navigator.app.createWindow("content.html",
+                                       {displayId, displays[i].id},
+                                       onSuccess,
+                                       onError);
+            )
+          }
+        }
+        navigator.display.onconnect = onDisplayConnected;
+      </pre>
+      </p>
+      </section>
+    </section>
+    <section>
+      <h2>
+        <a>AppWindow</a> interface
+      </h2>
+      <section class="issue">
+        <p>
+          This is a very rough API definition. The target usage scenario is for
+          mobile platform in which only supports app window showing in fullscreen
+          mode. We need to figure out the window options for desktop usage
+          scenario, such as dimension, show state etc.
+        </p>
+      </section>
+      <section>
+        <p>
+          The <a>AppWindow</a> interface logically represents a content window
+          showing on the screen. It extends the DOMWindow by adding some additional
+          attributes.
+        </p>
+        <dl title="partial interface Application" class="idl">
+          <dt>void createWindow(DOMString url,
+                                <a>WindowOptions</a> param,
+                                SuccessCallback successCallback,
+                                optional ErrorCallback errorCallback)
+          </dt>
+          <dt>AppWindow getCurrentWindow()</dt>
+          <dd>Get the current app window associated with the current JS context</dd>
+        </dl>
+        <dl title="interface AppWindow" class="idl">
+          <dt>readonly attribute window contentWindow</dt>
+          <dd>The JavaScript 'window' object for the created child window</dd>
+          <dt>readonly attribute DOMString displayId</dt>
+          <dd>The <a>Display</a> that the window is showed.</dd>
+        </dl>
+        <section class="issue">
+          <p>
+            For Desktop scenario, since a window can be across multiple
+            displays, does it make sense to add displayId?
+          </p>
+        </section>
+        <dl title="interface WindowOptions" class="idl">
+          <dt>attribute DOMString displayId?</dt>
+          <dd>Optional parameter. If specified, the window will be showed on
+              the display identified by the <a>displayId</a>. Otherwise, it
+              will be showed on the default display selected by the user agent.
+          </dd>
+        </dl>
+      </section>
+    </section>
+  </body>
+</html>
